@@ -1,38 +1,84 @@
-# go-starter
+# flat
 
 [![CI](https://github.com/sraphs/flat/actions/workflows/ci.yml/badge.svg)](https://github.com/sraphs/flat/actions/workflows/ci.yml)
 
->  Go project template repository
-
-
-## Work flow
-
-1. Create a new repository from go-starter
-2. Use `make rename` to change go mod name
-2. Create a dev branch from main
-3. Make changes
-4. Commit code
-5. Merge pull requests
-5. Create tag
-6. Git Action auto generate CHANGELOG.md and create release
-
-## Features
-
-- xxxx
-- xxxx
-- xxxx
-
-## Install
-
-```bash
-go get github.com/sraphs/flat
-```
+>  flatten/unflatten nested map or struct(only flatten support  struct).
 
 ## Usage
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+```go
+package flat_test
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/sraphs/flat"
+)
+
+func ExampleFlatten() {
+	type ServerHttp struct {
+		Network string
+		Addr    string
+		Timeout time.Duration
+	}
+
+	type ServerGrpc struct {
+		Addr    string
+		Timeout time.Duration
+	}
+
+	type Server struct {
+		Http ServerHttp
+	}
+
+	type Bootstrap struct {
+		Server Server
+	}
+
+	c := Bootstrap{
+		Server: Server{
+			Http: ServerHttp{
+				Addr:    "0.0.0.0:8000",
+				Timeout: 2 * time.Second,
+			},
+		},
+	}
+
+	opt := flat.Option{
+		Separator: ".",
+		Case:      flat.CaseLower,
+	}
+
+	flattened := flat.Flatten(c, opt)
+
+	fmt.Println(flattened["server.http.addr"])
+	fmt.Println(flattened["server.http.timeout"])
+
+	// Output:
+	// 0.0.0.0:8000
+	// 2s
+}
+
+func ExampleUnflatten() {
+	m := map[string]interface{}{
+		"server.http.addr":    "0.0.0.0:8000",
+		"server.http.timeout": "2s",
+	}
+
+	opt := flat.Option{
+		Separator: ".",
+		Case:      flat.CaseLower,
+	}
+
+	unflattened := flat.Unflatten(m, opt)
+
+	fmt.Sprintln(unflattened)
+
+	// Output:
+}
+
+```
 
 ## Contributing
 
