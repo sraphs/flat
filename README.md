@@ -50,7 +50,7 @@ func ExampleFlatten() {
 		Case:      flat.CaseLower,
 	}
 
-	flattened := flat.Flatten(c, opt)
+	flattened := opt.Flatten(c)
 
 	fmt.Println(flattened["server.http.addr"])
 	fmt.Println(flattened["server.http.timeout"])
@@ -71,7 +71,7 @@ func ExampleUnflatten() {
 		Case:      flat.CaseLower,
 	}
 
-	unflattened := flat.Unflatten(m, opt)
+	unflattened := opt.Unflatten(m)
 
 	fmt.Sprintln(unflattened)
 
