@@ -1,9 +1,8 @@
 package flat
 
 import (
+	"reflect"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestUnflatten(t *testing.T) {
@@ -130,7 +129,10 @@ func TestUnflatten(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			gotDst := tt.args.opt.Unflatten(tt.args.src)
-			assert.Equal(t, tt.wantDst, gotDst)
+
+			if !reflect.DeepEqual(gotDst, tt.wantDst) {
+				t.Errorf("Unflatten() = %v, want %v", gotDst, tt.wantDst)
+			}
 		})
 	}
 }

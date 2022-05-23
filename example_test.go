@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sraphs/go/x/flat"
+	"github.com/sraphs/flat"
 )
 
 func ExampleFlatten() {

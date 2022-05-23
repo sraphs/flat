@@ -4,7 +4,7 @@ package flat
 import (
 	"strings"
 
-	"github.com/sraphs/go/x/strcase"
+	"github.com/sraphs/strcase"
 )
 
 var DefaultOption = &Option{
